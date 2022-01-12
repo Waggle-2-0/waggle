@@ -1,0 +1,186 @@
+<!doctype html>
+<html>
+    <head>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <!--
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-111922440-2"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-111922440-2');
+        </script>
+        -->
+
+        <title>Waggle 1.1</title>
+
+        <link rel="stylesheet" href="css/custom.css">
+
+        <!-- For Blockly -->
+        <!--
+        <script src="js/vendor/blockly_compressed.js"></script>
+        <script src="js/vendor/blocks_compressed.js"></script>
+        <script src="js/vendor/en.js"></script>
+        <script src="js/vendor/javascript_compressed.js"></script>
+        -->
+
+        <!-- For JS Interpretr -->
+        <!-- <script src="js/vendor/acorn_interpreter.js"></script> -->
+
+        <!-- Stupidly just pasting this in, because inputting from an XML file
+             seems to be surprisingly complex. -->
+        <!-- <embed src="blockly_xml/toolbox.xml" type="xml"> -->
+        <!-- <script src="blockly_xml/toolbox.xml" type="text/xml"></script> -->
+<!--
+DELETED
+-->
+
+        <!-- For matter -->
+        <script src="js/vendor/matter.js"></script>
+
+        <!-- For the ability to seed the pseudo-random number generator for
+             Math.random() -->
+        <script src="js/vendor/seedrandom.min.js"></script>
+
+        <!-- For plotting. -->
+        <script src="js/vendor/highcharts.js"></script>
+        <script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+        <!-- For saving the blocks to a local file. -->
+        <script src="js/vendor/FileSaver.min.js"></script>
+
+        <!-- For graph data structure and algorithms. -->
+        <script src="js/vendor/jsgraphs.min.js"></script>
+
+    </head>
+
+    <body>
+        <h2>Waggle 1.1: Online Laboratory for Swarm Robotics</h2>
+
+        <div class="grid">
+            <div class="row">
+
+                <div class="gap-col"></div>
+
+                <div class="matter-col">
+                    <div id="matterDiv"></div>
+                </div>
+
+                <div class="controls-coll">
+
+                    <div id="controlsDiv">
+                        <table cellpadding="2" style="width: 100%">
+                            <tr>
+                            <td><button type="button" id="resetButton">Reset</button></td>
+                            <td><button type="button" id="reseedAndResetButton">Reseed and Reset</button></td>
+                            <td><input type="checkbox" id="allowMovementCheckbox">Movement?</input></td>
+                            <td><input type="checkbox" id="allowRotationCheckbox">Rotation?</input></td>
+                            
+                            <td><input type="checkbox" id="showSensorsCheckbox">Show Sensors?</input></td>
+
+                            </tr>
+
+                            <tr><td>Timescale </td>
+                                <td><input id='timeScaleSlider' type='range' min='0.1' value='1.0' max='1.0' step='0.1'/></td>
+                                <td id='timeScaleText'>1</td></tr> 
+
+                            <tr><td>Desired Population </td>
+                                <td><input id='nRobotsSlider' type='range' min='0' value='1' max='100' step='1'/></td>
+                                <td id='nRobotsText'></td>
+
+                                <td >Actual Population</td>
+                                <td id='actualPopulationText'></td></tr> 
+
+                            <tr>
+                                <td id='nRedPucksLabel'>Red Pucks</td>
+                                <td><input id='nRedPucksSlider' type='range' min='0' value='1' max='250' step='1'/></td>
+                                <td id='nRedPucksText'></td></tr> 
+
+                            <tr>
+                                <td id='nGreenPucksLabel'>Green Pucks</td>
+                                <td><input id='nGreenPucksSlider' type='range' min='0' value='1' max='150' step='1'/></td>
+                                <td id='nGreenPucksText'></td></tr> 
+
+                            <tr>
+                                <td id='maxStepLabel'>Max. Step</td>
+                                <td><input id='maxStepSlider' type='range' min='0' value='0' max='100000' step='1000'/></td>
+                                <td id='maxStepText'></td></tr> 
+
+                            <tr>
+                                <div id="gridDiv">
+                                    Select grid visibility:
+                                    <select id="gridSelect">
+                                        <option value="none">No grid</option>
+                                        <option value="pheromone">Show Pheromone Grid</option>
+                                        <option value="nest">Show Nest Grid</option>
+                                    </select>
+                                </div>
+
+                                <!--
+                                <div id="jsCtrlDiv">
+                                    Select JS Controller:
+                                    <select id="jsCtrlSelect">
+                                        <option value="OrbitController">Orbit</option>
+                                        <option value="OrbitalConstructionController">Orbital Construction Controller</option>
+                                    </select>
+                                </div>
+                                -->
+                    
+                            </tr>
+
+                        </table>
+                    </div>
+
+                    <div id="analysisControlsDiv">
+                        <table cellpadding="2" style="width: 100%">
+                            <tr>
+                            <td><button type="button" id="clearPlotsAndResetButton">Clear Plots and Reset</button></td>
+                            <td><input type="checkbox" id="doAnalysisCheckbox"></input></td>
+                            <td id='doAnalysisText'>Plot?</td>
+
+                            <td><input type="checkbox" id="resetAfterMaxStepCheckbox">Reset After Max. Step?</input></td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div id='analysisMessage'></div>
+
+                    <div id="chartDiv" style="width: 500px; height: 500px"></div>
+
+                </div>
+
+<!--
+                <div class="gap-col"></div>
+
+                <div class="blockly-col">
+-->
+
+                <div id="blocklyControlsDiv"></div>
+<!--
+BLOCKLY STUFF DELETED, EXCEPT CONTROLS DIV ABOVE
+-->
+
+            </div>
+        </div>
+
+        <!-- My scripts -->
+        <script src="js/populate.js"></script>
+        <script src="js/sensors.js"></script>
+        <script src="js/robot.js"></script>
+        <script src="js/jsControllers.js"></script>
+<!--
+        <script src="js/blocklyController.js"></script>
+-->
+        <script src="js/analysis.js"></script>
+        <script src="js/CustomRender.js"></script>
+        <script src="js/valueGrids.js"></script>
+        <script src="js/distToSegment.js"></script>
+        <script src="js/nest.js"></script>
+        <script src="js/main.js"></script>
+<!--
+        <script src="js/blocklyConfig.js"></script>
+-->
+
+    </body>
+</html>
